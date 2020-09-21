@@ -1,0 +1,21 @@
+{
+  "name": "zloader/signalhire-test-job",
+  "authors": [
+    {
+      "name": "Evgeniy Moskalev",
+      "email": "zloader@gmail.com"
+    }
+  ],
+  "require": {
+    "symfony/console": "^v5.1.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "./src/",
+      "App\\Install\\": "./install/"
+    }
+  },
+  "scripts": {
+    "post-install-cmd": "App\\Install\\Installer::postInstall"
+  }
+}

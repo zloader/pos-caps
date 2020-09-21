@@ -1,0 +1,29 @@
+#!/usr/bin/env php
+<?php
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+use App\Command\CanCommand;
+use App\Command\UserCommand;
+use App\Service\CapabilityService;
+use App\Service\PositionService;
+use App\Service\Reader\CapabilityReader;
+use App\Service\Reader\PositionReader;
+use Symfony\Component\Console\Application;
+
+define('DS', DIRECTORY_SEPARATOR);
+define('CONFIG_DIR', dirname(__DIR__, 2) . DS . 'config' . DS);
+
+$capabilityProvider = new CapabilityService(
+  new CapabilityReader(CONFIG_DIR . 'capabilities.php')
+);
+
+$positionProvider = new PositionService(
+  new PositionReader(CONFIG_DIR . 'positions.php', $capabilityProvider)
+);
+
+$app = new Application();
+$app->add(new UserCommand($positionProvider));
+$app->add(new CanCommand($positionProvider, $capabilityProvider));
+$app->run();
+
+
